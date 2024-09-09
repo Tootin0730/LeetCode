@@ -1,14 +1,17 @@
 public class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) return 0;  // Edge case for empty array
-        
-        int k = 1;  // k will track the index of the next unique element
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] != nums[i - 1]) {  // Compare with the previous element
-                nums[k] = nums[i];  // Place the unique element in position k
-                k++;  // Increment k to move to the next position
+        int n = nums.length;
+        if (n <= 2) return n; // If the array has 2 or fewer elements, no need to process.
+
+        int j = 2; // Start updating from the 3rd element
+        for (int i = 2; i < n; i++) {
+            // If the current element is not equal to the element two places before it, then it is safe to include it.
+            if (nums[i] != nums[j - 2]) {
+                nums[j] = nums[i];
+                j++;
             }
         }
-        return k;  // Return the number of unique elements
+        
+        return j; // 'j' is the new length of the modified array
     }
 }
