@@ -1,21 +1,30 @@
 public class Solution {
-    public int[] productExceptSelf(int[] nums) {
-        int n = nums.length;
-        int[] result = new int[n];
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int total_gas = 0, total_cost = 0;
+        int current_gas = 0, start = 0;
 
-        // First pass: fill the result with prefix products
-        result[0] = 1;  // There are no elements to the left of the first element
-        for (int i = 1; i < n; i++) {
-            result[i] = result[i - 1] * nums[i - 1];
+        // Calculate total gas and total cost
+        for (int i = 0; i < gas.length; i++) {
+            total_gas += gas[i];
+            total_cost += cost[i];
         }
 
-        // Second pass: multiply by suffix products
-        int suffix = 1;
-        for (int i = n - 1; i >= 0; i--) {
-            result[i] *= suffix;
-            suffix *= nums[i];
+        // If total gas is less than total cost, it's impossible to complete the circuit
+        if (total_gas < total_cost) {
+            return -1;
         }
 
-        return result;
+        // Find the starting point using the greedy approach
+        for (int i = 0; i < gas.length; i++) {
+            current_gas += gas[i] - cost[i];
+            // If we run out of gas, reset the starting point to the next station
+            if (current_gas < 0) {
+                start = i + 1;
+                current_gas = 0;
+            }
+        }
+
+        return start;
     }
 }
+
