@@ -1,30 +1,34 @@
+
+import java.util.Arrays;
+
 public class Solution {
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        int total_gas = 0, total_cost = 0;
-        int current_gas = 0, start = 0;
-
-        // Calculate total gas and total cost
-        for (int i = 0; i < gas.length; i++) {
-            total_gas += gas[i];
-            total_cost += cost[i];
-        }
-
-        // If total gas is less than total cost, it's impossible to complete the circuit
-        if (total_gas < total_cost) {
-            return -1;
-        }
-
-        // Find the starting point using the greedy approach
-        for (int i = 0; i < gas.length; i++) {
-            current_gas += gas[i] - cost[i];
-            // If we run out of gas, reset the starting point to the next station
-            if (current_gas < 0) {
-                start = i + 1;
-                current_gas = 0;
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candies = new int[n];
+        
+        // Step 1: Initialize each child with 1 candy
+        Arrays.fill(candies, 1);
+        
+        // Step 2: Left-to-Right Pass
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
             }
         }
-
-        return start;
+        
+        // Step 3: Right-to-Left Pass
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+        }
+        
+        // Step 4: Calculate total candies
+        int totalCandies = 0;
+        for (int candy : candies) {
+            totalCandies += candy;
+        }
+        
+        return totalCandies;
     }
 }
-
