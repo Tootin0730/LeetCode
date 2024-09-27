@@ -1,34 +1,41 @@
-
-import java.util.Arrays;
-
 public class Solution {
-    public int candy(int[] ratings) {
-        int n = ratings.length;
-        int[] candies = new int[n];
-        
-        // Step 1: Initialize each child with 1 candy
-        Arrays.fill(candies, 1);
-        
-        // Step 2: Left-to-Right Pass
-        for (int i = 1; i < n; i++) {
-            if (ratings[i] > ratings[i - 1]) {
-                candies[i] = candies[i - 1] + 1;
+    public int trap(int[] height) {
+        if (height == null || height.length == 0) {
+            return 0;
+        }
+
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int waterTrapped = 0;
+
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= leftMax) {
+                    leftMax = height[left];
+                } else {
+                    waterTrapped += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] >= rightMax) {
+                    rightMax = height[right];
+                } else {
+                    waterTrapped += rightMax - height[right];
+                }
+                right--;
             }
         }
-        
-        // Step 3: Right-to-Left Pass
-        for (int i = n - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i + 1]) {
-                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
-            }
-        }
-        
-        // Step 4: Calculate total candies
-        int totalCandies = 0;
-        for (int candy : candies) {
-            totalCandies += candy;
-        }
-        
-        return totalCandies;
+
+        return waterTrapped;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        int[] height1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        System.out.println("Trapped water: " + solution.trap(height1));  // Output: 6
+
+        int[] height2 = {4, 2, 0, 3, 2, 5};
+        System.out.println("Trapped water: " + solution.trap(height2));  // Output: 9
     }
 }
