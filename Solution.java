@@ -1,41 +1,45 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Solution {
-    public int trap(int[] height) {
-        if (height == null || height.length == 0) {
-            return 0;
-        }
 
-        int left = 0, right = height.length - 1;
-        int leftMax = 0, rightMax = 0;
-        int waterTrapped = 0;
+    public int romanToInt(String s) {
+        // Create a map to store Roman numeral values
+        Map<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
 
-        while (left < right) {
-            if (height[left] < height[right]) {
-                if (height[left] >= leftMax) {
-                    leftMax = height[left];
-                } else {
-                    waterTrapped += leftMax - height[left];
-                }
-                left++;
+        int total = 0;
+        int prevValue = 0;
+
+        // Loop through the string from the end to the beginning
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int currentValue = romanMap.get(s.charAt(i));
+
+            // If the current value is less than the previous one, subtract it; otherwise, add it
+            if (currentValue < prevValue) {
+                total -= currentValue;
             } else {
-                if (height[right] >= rightMax) {
-                    rightMax = height[right];
-                } else {
-                    waterTrapped += rightMax - height[right];
-                }
-                right--;
+                total += currentValue;
             }
+
+            // Update previous value for the next iteration
+            prevValue = currentValue;
         }
 
-        return waterTrapped;
+        return total;
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        int[] height1 = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-        System.out.println("Trapped water: " + solution.trap(height1));  // Output: 6
-
-        int[] height2 = {4, 2, 0, 3, 2, 5};
-        System.out.println("Trapped water: " + solution.trap(height2));  // Output: 9
+        System.out.println("III -> " + solution.romanToInt("III"));        // Output: 3
+        System.out.println("LVIII -> " + solution.romanToInt("LVIII"));    // Output: 58
+        System.out.println("MCMXCIV -> " + solution.romanToInt("MCMXCIV"));// Output: 1994
     }
 }
