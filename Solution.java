@@ -1,45 +1,30 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Solution {
 
-    public int romanToInt(String s) {
-        // Create a map to store Roman numeral values
-        Map<Character, Integer> romanMap = new HashMap<>();
-        romanMap.put('I', 1);
-        romanMap.put('V', 5);
-        romanMap.put('X', 10);
-        romanMap.put('L', 50);
-        romanMap.put('C', 100);
-        romanMap.put('D', 500);
-        romanMap.put('M', 1000);
+    public String intToRoman(int num) {
+        // Define the mappings of integers to Roman numerals in descending order
+        int[] values =    {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M",  "CM", "D",  "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
-        int total = 0;
-        int prevValue = 0;
+        StringBuilder roman = new StringBuilder();
 
-        // Loop through the string from the end to the beginning
-        for (int i = s.length() - 1; i >= 0; i--) {
-            int currentValue = romanMap.get(s.charAt(i));
-
-            // If the current value is less than the previous one, subtract it; otherwise, add it
-            if (currentValue < prevValue) {
-                total -= currentValue;
-            } else {
-                total += currentValue;
+        // Traverse through the values array
+        for (int i = 0; i < values.length; i++) {
+            // For each value, check how many times it can be subtracted from num
+            while (num >= values[i]) {
+                num -= values[i];           // Subtract the value from num
+                roman.append(symbols[i]);   // Append the corresponding symbol to the result
             }
-
-            // Update previous value for the next iteration
-            prevValue = currentValue;
         }
 
-        return total;
+        return roman.toString();
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        System.out.println("III -> " + solution.romanToInt("III"));        // Output: 3
-        System.out.println("LVIII -> " + solution.romanToInt("LVIII"));    // Output: 58
-        System.out.println("MCMXCIV -> " + solution.romanToInt("MCMXCIV"));// Output: 1994
+        // Test cases
+        System.out.println("3749 -> " + solution.intToRoman(3749));  // Output: "MMMDCCXLIX"
+        System.out.println("58 -> " + solution.intToRoman(58));      // Output: "LVIII"
+        System.out.println("1994 -> " + solution.intToRoman(1994));  // Output: "MCMXCIV"
     }
 }
