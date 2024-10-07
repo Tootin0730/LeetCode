@@ -1,22 +1,53 @@
 public class Solution {
-    public String reverseWords(String s) {
-        String[] words = s.trim().split("\\s+");
-        StringBuilder reversed = new StringBuilder();
+    public String convert(String s, int numRows) {
+        if (numRows == 1) return s;
 
-        for (int i = words.length - 1; i >= 0; i--) {
-            reversed.append(words[i]);
-            if (i != 0) {
-                reversed.append(" ");
-            }
+        // Create a list of StringBuilders for each row
+        StringBuilder[] rows = new StringBuilder[Math.min(numRows, s.length())];
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = new StringBuilder();
         }
-        return reversed.toString();
+
+        // Initialize variables for direction and row tracking
+        int currentRow = 0;
+        boolean goingDown = false;
+
+        // Iterate through the characters in the string
+        for (char c : s.toCharArray()) {
+            rows[currentRow].append(c);
+            
+            // If we're at the top or bottom row, change direction
+            if (currentRow == 0 || currentRow == numRows - 1) goingDown = !goingDown;
+            
+            // Move up or down depending on the direction
+            currentRow += goingDown ? 1 : -1;
+        }
+
+        // Concatenate all rows to form the final result
+        StringBuilder result = new StringBuilder();
+        for (StringBuilder row : rows) {
+            result.append(row);
+        }
+        
+        return result.toString();
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-
-        System.out.println(solution.reverseWords("the sky is blue"));         // Output: "blue is sky the"
-        System.out.println(solution.reverseWords("  hello world  "));         // Output: "world hello"
-        System.out.println(solution.reverseWords("a good   example"));        // Output: "example good a"
+        
+        // Example 1
+        String s1 = "PAYPALISHIRING";
+        int numRows1 = 3;
+        System.out.println(solution.convert(s1, numRows1)); // Output: PAHNAPLSIIGYIR
+        
+        // Example 2
+        String s2 = "PAYPALISHIRING";
+        int numRows2 = 4;
+        System.out.println(solution.convert(s2, numRows2)); // Output: PINALSIGYAHRPI
+        
+        // Example 3
+        String s3 = "A";
+        int numRows3 = 1;
+        System.out.println(solution.convert(s3, numRows3)); // Output: A
     }
 }
