@@ -1,27 +1,20 @@
 import java.lang.*;
-import java.io.*;
-import java.util.*;
 
 class Solution {
     public boolean isPalindrome(String s) {
-        String firstOne = s.toLowerCase();
-        firstOne = firstOne.replaceAll("\\s", "").replaceAll(",", "").replaceAll(":", "");
-        System.out.println(firstOne);
-
-        String newOne = s.toLowerCase();
-        newOne = newOne.replaceAll("\\s", "").replaceAll(",", "").replaceAll(":", "");
-
-        char[] reverse = newOne.toCharArray();
-        String newResult = "";
-        for (int i = reverse.length - 1; i >= 0; i--) {
-            newResult += reverse[i];
+        // Step 1: Remove all non-alphanumeric characters and convert to lowercase
+        StringBuilder filteredString = new StringBuilder();
+        
+        for (char c : s.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) {
+                filteredString.append(Character.toLowerCase(c));
+            }
         }
-        System.out.println(newResult);
-
-        if(firstOne.equals(newResult)){
-            return true;
-        } else{
-            return false;
-        }
+        
+        // Step 2: Check if the filtered string is a palindrome
+        String cleanedString = filteredString.toString();
+        String reversedString = filteredString.reverse().toString();
+        
+        return cleanedString.equals(reversedString);
     }
 }
