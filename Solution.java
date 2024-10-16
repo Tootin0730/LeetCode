@@ -1,19 +1,21 @@
 class Solution {
-    public int[] twoSum(int[] numbers, int target) {
-        int left = 0, right = numbers.length - 1;
-        
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+
         while (left < right) {
-            int sum = numbers[left] + numbers[right];
+            int currentArea = Math.min(height[left], height[right]) * (right - left);
             
-            if (sum == target) {
-                return new int[] {left + 1, right + 1};
-            } else if (sum < target) {
+            maxArea = Math.max(maxArea, currentArea);
+            
+            if (height[left] < height[right]) {
                 left++;
             } else {
                 right--;
             }
         }
-        
-        return new int[] {};
+
+        return maxArea;
     }
 }
