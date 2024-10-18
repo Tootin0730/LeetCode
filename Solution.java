@@ -1,42 +1,20 @@
-import java.util.*;
-
 class Solution {
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+        int left = 0;
+        int current_sum = 0;
+        int minLength = Integer.MAX_VALUE;
         
-        Arrays.sort(nums);
-        
-        for (int i = 0; i < nums.length - 2; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
+        for (int right = 0; right < n; right++) {
+            current_sum += nums[right];
             
-            int left = i + 1;
-            int right = nums.length - 1;
-            
-            while (left < right) {
-                int sum = nums[i] + nums[left] + nums[right];
-                
-                if (sum == 0) {
-                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                    
-                    while (left < right && nums[left] == nums[left + 1]) {
-                        left++;
-                    }
-                    while (left < right && nums[right] == nums[right - 1]) {
-                        right--;
-                    }
-                    left++;
-                    right--;
-                } else if (sum < 0) {
-                    left++;
-                } else {
-                    right--;
-                }
+            while (current_sum >= target) {
+                minLength = Math.min(minLength, right - left + 1);
+                current_sum -= nums[left];
+                left++;
             }
         }
         
-        return result;
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
     }
 }
-
