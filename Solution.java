@@ -1,20 +1,21 @@
+import java.util.HashSet;
+
 class Solution {
-    public int minSubArrayLen(int target, int[] nums) {
-        int n = nums.length;
-        int left = 0;
-        int current_sum = 0;
-        int minLength = Integer.MAX_VALUE;
+    public int lengthOfLongestSubstring(String s) {
+        int left = 0, right = 0, maxLength = 0;
+        HashSet<Character> charSet = new HashSet<>();
         
-        for (int right = 0; right < n; right++) {
-            current_sum += nums[right];
-            
-            while (current_sum >= target) {
-                minLength = Math.min(minLength, right - left + 1);
-                current_sum -= nums[left];
+        while (right < s.length()) {
+            if (!charSet.contains(s.charAt(right))) {
+                charSet.add(s.charAt(right));
+                maxLength = Math.max(maxLength, right - left + 1);
+                right++;
+            } else {
+                charSet.remove(s.charAt(left));
                 left++;
             }
         }
         
-        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+        return maxLength;
     }
 }

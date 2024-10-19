@@ -1,26 +1,28 @@
-Given an array of positive integers nums and a positive integer target, return the minimal length of a 
-subarray
- whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+Given a string s, find the length of the longest 
+substring
+ without repeating characters.
 
  
 
 Example 1:
 
-Input: target = 7, nums = [2,3,1,2,4,3]
-Output: 2
-Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
 Example 2:
 
-Input: target = 4, nums = [1,4,4]
+Input: s = "bbbbb"
 Output: 1
+Explanation: The answer is "b", with the length of 1.
 Example 3:
 
-Input: target = 11, nums = [1,1,1,1,1,1,1,1]
-Output: 0
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
  
 
 Constraints:
 
-1 <= target <= 109
-1 <= nums.length <= 105
-1 <= nums[i] <= 104
+0 <= s.length <= 5 * 104
+s consists of English letters, digits, symbols and spaces.
