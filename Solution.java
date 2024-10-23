@@ -1,71 +1,82 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 public class Solution {
-    public String minWindow(String s, String t) {
-        if (s == null || t == null || s.length() < t.length()) {
-            return "";
+    public boolean isValidSudoku(char[][] board) {
+        // Create sets to track the digits for rows, columns, and 3x3 sub-boxes
+        HashSet<Character>[] rows = new HashSet[9];
+        HashSet<Character>[] cols = new HashSet[9];
+        HashSet<Character>[] boxes = new HashSet[9];
+
+        for (int i = 0; i < 9; i++) {
+            rows[i] = new HashSet<>();
+            cols[i] = new HashSet<>();
+            boxes[i] = new HashSet<>();
         }
 
-        // Dictionary to store the frequency of characters in t
-        Map<Character, Integer> tCount = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            tCount.put(c, tCount.getOrDefault(c, 0) + 1);
-        }
+        // Iterate through each cell in the board
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char num = board[i][j];
 
-        // Number of unique characters in t that must be present in the window
-        int required = tCount.size();
-
-        // Sliding window pointers and variables
-        int left = 0, right = 0;
-        int formed = 0;  // Number of characters in the current window that match the required frequency
-        Map<Character, Integer> windowCounts = new HashMap<>();
-        int[] result = {-1, 0, 0};  // (window length, left, right)
-
-        while (right < s.length()) {
-            // Add the character at the right pointer to the window
-            char c = s.charAt(right);
-            windowCounts.put(c, windowCounts.getOrDefault(c, 0) + 1);
-
-            // Check if the current character matches the required frequency
-            if (tCount.containsKey(c) && windowCounts.get(c).intValue() == tCount.get(c).intValue()) {
-                formed++;
-            }
-
-            // Try to shrink the window from the left until it ceases to be "desirable"
-            while (left <= right && formed == required) {
-                c = s.charAt(left);
-
-                // Update the result if this window is smaller
-                if (result[0] == -1 || right - left + 1 < result[0]) {
-                    result[0] = right - left + 1;
-                    result[1] = left;
-                    result[2] = right;
+                // Skip empty cells (represented by '.')
+                if (num == '.') {
+                    continue;
                 }
 
-                // Remove the leftmost character from the window
-                windowCounts.put(c, windowCounts.get(c) - 1);
-                if (tCount.containsKey(c) && windowCounts.get(c).intValue() < tCount.get(c).intValue()) {
-                    formed--;
+                // Check if the number already exists in the current row
+                if (rows[i].contains(num)) {
+                    return false;
                 }
+                rows[i].add(num);
 
-                left++;
+                // Check if the number already exists in the current column
+                if (cols[j].contains(num)) {
+                    return false;
+                }
+                cols[j].add(num);
+
+                // Determine the 3x3 sub-box index and check if the number already exists
+                int boxIndex = (i / 3) * 3 + (j / 3);
+                if (boxes[boxIndex].contains(num)) {
+                    return false;
+                }
+                boxes[boxIndex].add(num);
             }
-
-            // Expand the window to the right
-            right++;
         }
 
-        // Return the smallest window or an empty string if no window was found
-        return result[0] == -1 ? "" : s.substring(result[1], result[2] + 1);
+        // If no violations are found, the board is valid
+        return true;
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        
-        // Test cases
-        System.out.println(solution.minWindow("ADOBECODEBANC", "ABC"));  // Output: "BANC"
-        System.out.println(solution.minWindow("a", "a"));  // Output: "a"
-        System.out.println(solution.minWindow("a", "aa"));  // Output: ""
+
+        // Example 1
+        char[][] board1 = {
+            {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        System.out.println(solution.isValidSudoku(board1)); // Output: true
+
+        // Example 2
+        char[][] board2 = {
+            {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
+            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        System.out.println(solution.isValidSudoku(board2)); // Output: false
     }
 }
