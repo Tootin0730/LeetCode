@@ -1,82 +1,46 @@
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Solution {
-    public boolean isValidSudoku(char[][] board) {
-        // Create sets to track the digits for rows, columns, and 3x3 sub-boxes
-        HashSet<Character>[] rows = new HashSet[9];
-        HashSet<Character>[] cols = new HashSet[9];
-        HashSet<Character>[] boxes = new HashSet[9];
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
 
-        for (int i = 0; i < 9; i++) {
-            rows[i] = new HashSet<>();
-            cols[i] = new HashSet<>();
-            boxes[i] = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+
+        if (matrix == null || matrix.length == 0) {
+            return result;
         }
 
-        // Iterate through each cell in the board
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                char num = board[i][j];
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
 
-                // Skip empty cells (represented by '.')
-                if (num == '.') {
-                    continue;
-                }
+        while (top <= bottom && left <= right) {
+            
+            for (int i = left; i <= right; i++) {
+                result.add(matrix[top][i]);
+            }
+            top++;
 
-                // Check if the number already exists in the current row
-                if (rows[i].contains(num)) {
-                    return false;
-                }
-                rows[i].add(num);
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
 
-                // Check if the number already exists in the current column
-                if (cols[j].contains(num)) {
-                    return false;
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    result.add(matrix[bottom][i]);
                 }
-                cols[j].add(num);
+                bottom--;
+            }
 
-                // Determine the 3x3 sub-box index and check if the number already exists
-                int boxIndex = (i / 3) * 3 + (j / 3);
-                if (boxes[boxIndex].contains(num)) {
-                    return false;
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
                 }
-                boxes[boxIndex].add(num);
+                left++;
             }
         }
-
-        // If no violations are found, the board is valid
-        return true;
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-
-        // Example 1
-        char[][] board1 = {
-            {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-        };
-        System.out.println(solution.isValidSudoku(board1)); // Output: true
-
-        // Example 2
-        char[][] board2 = {
-            {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
-            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-        };
-        System.out.println(solution.isValidSudoku(board2)); // Output: false
+        return result;
     }
 }
