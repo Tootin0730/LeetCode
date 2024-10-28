@@ -1,28 +1,37 @@
 import java.util.ArrayList;
-import java.util.List;
 
 class Solution {
-    public void rotate(int[][] matrix) {
-
-      List<Integer> result = new ArrayList<>();
-
+    public void setZeroes(int[][] matrix) {
         int top = 0;
         int bottom = matrix.length - 1;
         int left = 0;
         int right = matrix[0].length - 1;
 
-        while(left <= right){
-            for (int i = bottom; i >= 0; i--){
-                result.add(matrix[i][left]);
+        ArrayList<Integer> coordRow = new ArrayList<Integer>();
+        ArrayList<Integer> coordColumn = new ArrayList<Integer>();
+
+        for(int i = top; i <= bottom; i++){
+            for(var j = left; j <= right; j++){
+                if(matrix[i][j] == 0){
+                    coordRow.add(i);
+                    coordColumn.add(j);
+                }
             }
-            left++;
         }
         
-        int index = 0;
-        for(int vertic = 0; vertic <= bottom; vertic++){       
-            for(int horizon = 0; horizon <= right; horizon++){
-                matrix[vertic][horizon] = result.get(index);
-                index++;
+        int colSize = coordColumn.size(), colIndex = 0;
+        for(int a = 0; a < colSize; a++){
+            for(int i = top; i <= bottom; i++){
+                colIndex = coordColumn.get(a);
+                matrix[i][colIndex] = 0;
+            }
+        }
+
+        int rowSize = coordRow.size(), rowIndex = 0;
+        for(int b = 0; b < rowSize; b++){
+            for(int i = left; i <= right; i++){
+                rowIndex = coordRow.get(b);
+                matrix[rowIndex][i] = 0;
             }
         }
     }
