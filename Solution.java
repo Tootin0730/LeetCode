@@ -1,18 +1,28 @@
 class Solution {
-    public boolean canConstruct(String ransomNote, String magazine) {
-        int[] charCount = new int[26];
+    public boolean isIsomorphic(String s, String t) {
+        char[] charS = new char[s.length()];
+        char[] charT = new char[t.length()];
 
-        for (char c : magazine.toCharArray()) {
-            charCount[c - 'a']++;
+        for (int a = 0; a < s.length(); a++) {
+            charS[a] = s.charAt(a);
+            charT[a] = t.charAt(a);
         }
-
-        for (char c : ransomNote.toCharArray()) {
-            if (charCount[c - 'a'] == 0) {
-                return false; 
+        
+        int result = 0;
+        for (int i = 0; i < charS.length; i++){
+            for(int j = i; j < charS.length; j++){
+                if(charS[i] == charS[j] && charT[i] != charT[j]){
+                    result += 1;
+                }else if(charT[i] == charT[j] && charS[i] != charS[j]){
+                    result += 1;
+                }
             }
-            charCount[c - 'a']--; 
         }
 
-        return true; 
+        if(result == 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
