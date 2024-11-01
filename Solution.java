@@ -1,28 +1,31 @@
+import java.util.HashMap;
+
 class Solution {
     public boolean wordPattern(String pattern, String s) {
+        String[] words = s.split(" ");
 
-        String[] stringS = s.split(" "); 
+        if (words.length != pattern.length()) return false;
 
-        char[] charPattern = new char[pattern.length()];
-        for (int a = 0; a < pattern.length(); a++) {
-            charPattern[a] = pattern.charAt(a);
-        }
+        HashMap<Character, String> charToWord = new HashMap<>();
+        HashMap<String, Character> wordToChar = new HashMap<>();
 
-        if(stringS.length != charPattern.length){
-            return false;
-        }
-        
-        int result = 0;
-        for (int i = 0; i < charPattern.length; i++){
-            for (int j = i; j < charPattern.length; j++){
-                if (charPattern[i] == charPattern[j] && !stringS[i].equals(stringS[j])) {
-                    result += 1;
-                } else if (stringS[i].equals(stringS[j]) && charPattern[i] != charPattern[j]) {
-                    result += 1;
-                }
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            String word = words[i];
+
+            if (charToWord.containsKey(c)) {
+                if (!charToWord.get(c).equals(word)) return false;
+            } else {
+                charToWord.put(c, word);
+            }
+
+            if (wordToChar.containsKey(word)) {
+                if (wordToChar.get(word) != c) return false;
+            } else {
+                wordToChar.put(word, c);
             }
         }
-
-        return result == 0;
+        
+        return true;
     }
 }
