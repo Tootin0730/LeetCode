@@ -1,25 +1,24 @@
-import java.util.HashMap;
-
 class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        if (s.length() != t.length()) return false;
+    public boolean wordPattern(String pattern, String s) {
 
-        HashMap<Character, Character> mapST = new HashMap<>();
-        HashMap<Character, Character> mapTS = new HashMap<>();
+        String[] stringS = s.split(" "); 
 
-        for (int i = 0; i < s.length(); i++) {
-            char charS = s.charAt(i);
-            char charT = t.charAt(i);
-
-            if (mapST.containsKey(charS) && mapST.get(charS) != charT) {
-                return false;
-            } else if (mapTS.containsKey(charT) && mapTS.get(charT) != charS) {
-                return false;
-            }
-
-            mapST.put(charS, charT);
-            mapTS.put(charT, charS);
+        char[] charPattern = new char[pattern.length()];
+        for (int a = 0; a < pattern.length(); a++) {
+            charPattern[a] = pattern.charAt(a);
         }
-        return true;
+        
+        int result = 0;
+        for (int i = 0; i < charPattern.length; i++){
+            for (int j = i; j < charPattern.length; j++){
+                if (charPattern[i] == charPattern[j] && !stringS[i].equals(stringS[j])) {
+                    result += 1;
+                } else if (stringS[i].equals(stringS[j]) && charPattern[i] != charPattern[j]) {
+                    result += 1;
+                }
+            }
+        }
+
+        return result == 0;
     }
 }
