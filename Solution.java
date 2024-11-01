@@ -7,6 +7,10 @@ class Solution {
         for (int a = 0; a < pattern.length(); a++) {
             charPattern[a] = pattern.charAt(a);
         }
+
+        if(stringS.length != charPattern.length){
+            return false;
+        }
         
         int result = 0;
         for (int i = 0; i < charPattern.length; i++){
