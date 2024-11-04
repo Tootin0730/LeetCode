@@ -1,31 +1,23 @@
-import java.util.HashMap;
-
 class Solution {
-    public boolean wordPattern(String pattern, String s) {
-        String[] words = s.split(" ");
+    public boolean isAnagram(String s, String t) {
 
-        if (words.length != pattern.length()) return false;
+        if (s.length() != t.length()) {
+            return false;
+        }
 
-        HashMap<Character, String> charToWord = new HashMap<>();
-        HashMap<String, Character> wordToChar = new HashMap<>();
+        int[] charCount = new int[26];
 
-        for (int i = 0; i < pattern.length(); i++) {
-            char c = pattern.charAt(i);
-            String word = words[i];
+        for (int i = 0; i < s.length(); i++) {
+            charCount[s.charAt(i) - 'a']++;
+            charCount[t.charAt(i) - 'a']--;
+        }
 
-            if (charToWord.containsKey(c)) {
-                if (!charToWord.get(c).equals(word)) return false;
-            } else {
-                charToWord.put(c, word);
-            }
-
-            if (wordToChar.containsKey(word)) {
-                if (wordToChar.get(word) != c) return false;
-            } else {
-                wordToChar.put(word, c);
+        for (int count : charCount) {
+            if (count != 0) {
+                return false;
             }
         }
-        
+
         return true;
     }
 }
