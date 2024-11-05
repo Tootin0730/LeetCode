@@ -1,23 +1,17 @@
+import java.util.*;
+
 class Solution {
-    public boolean isAnagram(String s, String t) {
-
-        if (s.length() != t.length()) {
-            return false;
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> anagramMap = new HashMap<>();
+        
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String sortedStr = new String(chars);
+            
+            anagramMap.computeIfAbsent(sortedStr, k -> new ArrayList<>()).add(str);
         }
-
-        int[] charCount = new int[26];
-
-        for (int i = 0; i < s.length(); i++) {
-            charCount[s.charAt(i) - 'a']++;
-            charCount[t.charAt(i) - 'a']--;
-        }
-
-        for (int count : charCount) {
-            if (count != 0) {
-                return false;
-            }
-        }
-
-        return true;
+        
+        return new ArrayList<>(anagramMap.values());
     }
 }
