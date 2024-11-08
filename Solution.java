@@ -1,25 +1,17 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
-class Solution {
-    public boolean isHappy(int n) {
-        Set<Integer> seen = new HashSet<>();
+public class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
 
-        while (n != 1 && !seen.contains(n)) {
-            seen.add(n);
-            n = getSumOfSquares(n);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k) {
+                return true;
+            }
+            map.put(nums[i], i);
         }
-
-        return n == 1;
-    }
-
-    private int getSumOfSquares(int n) {
-        int sum = 0;
-        while (n > 0) {
-            int digit = n % 10;
-            sum += digit * digit;
-            n /= 10;
-        }
-        return sum;
+        
+        return false;
     }
 }
