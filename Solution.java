@@ -1,26 +1,25 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
+    public boolean isHappy(int n) {
+        Set<Integer> seen = new HashSet<>();
 
-        List<Integer> result = new ArrayList<>();
-
-        for(int i = 0; i < nums.length; i++){
-            for(int j = i+1; j < nums.length; j++){
-                if(nums[i] + nums[j] == target){
-                    result.add(i);
-                    result.add(j);
-                }
-            }
+        while (n != 1 && !seen.contains(n)) {
+            seen.add(n);
+            n = getSumOfSquares(n);
         }
 
-        int [] arr = new int[result.size()];
+        return n == 1;
+    }
 
-        for (int i = 0; i < result.size(); i++){
-            arr[i] = result.get(i);
+    private int getSumOfSquares(int n) {
+        int sum = 0;
+        while (n > 0) {
+            int digit = n % 10;
+            sum += digit * digit;
+            n /= 10;
         }
-
-        return arr;
+        return sum;
     }
 }
