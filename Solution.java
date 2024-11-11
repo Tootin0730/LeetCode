@@ -1,17 +1,28 @@
-import java.util.HashMap;
+import java.util.Arrays;
 
-public class Solution {
-    public boolean containsNearbyDuplicate(int[] nums, int k) {
+class Solution {
+    public int longestConsecutive(int[] nums) {
 
-        HashMap<Integer, Integer> map = new HashMap<>();
-        
-        for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k) {
-                return true;
-            }
-            map.put(nums[i], i);
+        int leng = nums.length;
+        if(leng == 0){
+            return 0;
         }
-        
-        return false;
+
+        int count = 0, next;
+        Arrays.sort(nums);
+
+        for (int i = 0; i < leng; i++){
+            if(i != leng-1 && nums[i] == nums[i+1]){
+                i += 1;    
+            }
+            next = nums[i] + 1;
+            for(int element : nums){
+                if(element == next){
+                    count += 1;
+                    System.out.println(next);
+                }
+            }
+        }
+        return count+1;
     }
 }
