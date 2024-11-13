@@ -1,27 +1,22 @@
-import java.util.ArrayList;
-import java.util.List;
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        java.util.Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
-public class Solution {
-    public List<String> summaryRanges(int[] nums) {
-        List<String> result = new ArrayList<>();
-        int n = nums.length;
-        
-        if (n == 0) {
-            return result;
-        }
-        
-        int start = 0;
+        int[][] result = new int[intervals.length][2];
+        int index = 0;
 
-        for (int i = 0; i < n; i++) {
-            if (i == n - 1 || nums[i] + 1 != nums[i + 1]) {
-                if (start == i) {
-                    result.add(String.valueOf(nums[start]));
-                } else {
-                    result.add(nums[start] + "->" + nums[i]);
-                }
-                start = i + 1;
+        result[index] = intervals[0];
+        for (int i = 1; i < intervals.length; i++) {
+            int[] lastInterval = result[index];
+
+            if (lastInterval[1] >= intervals[i][0]) {
+                lastInterval[1] = Math.max(lastInterval[1], intervals[i][1]);
+            } else {
+                index++;
+                result[index] = intervals[i];
             }
         }
-        return result;
+
+        return java.util.Arrays.copyOf(result, index + 1);
     }
 }
