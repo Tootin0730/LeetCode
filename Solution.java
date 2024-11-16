@@ -1,29 +1,21 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Solution {
-    public int[][] insert(int[][] intervals, int[] newInterval) {
-        List<int[]> result = new ArrayList<>();
-        int i = 0;
-        int n = intervals.length;
+    public int findMinArrowShots(int[][] points) {
+        if (points == null || points.length == 0) return 0;
 
-        while (i < n && intervals[i][1] < newInterval[0]) {
-            result.add(intervals[i]);
-            i++;
+        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+
+        int arrows = 1;
+        int currentEnd = points[0][1]; 
+        
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > currentEnd) {
+                arrows++; 
+                currentEnd = points[i][1]; 
+            }
         }
 
-        while (i < n && intervals[i][0] <= newInterval[1]) {
-            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
-            i++;
-        }
-        result.add(newInterval); 
-
-        while (i < n) {
-            result.add(intervals[i]);
-            i++;
-        }
-
-        return result.toArray(new int[result.size()][]);
+        return arrows;
     }
 }
