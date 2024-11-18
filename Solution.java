@@ -1,21 +1,23 @@
-import java.util.Arrays;
+import java.util.Stack;
 
-public class Solution {
-    public int findMinArrowShots(int[][] points) {
-        if (points == null || points.length == 0) return 0;
+class Solution {
+    public boolean isValid(String s) {
 
-        Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
-
-        int arrows = 1;
-        int currentEnd = points[0][1]; 
+        Stack<Character> result = new Stack<>();
         
-        for (int i = 1; i < points.length; i++) {
-            if (points[i][0] > currentEnd) {
-                arrows++; 
-                currentEnd = points[i][1]; 
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                result.push(c);
+            } else if (c == ')' && !result.isEmpty() && result.peek() == '(') {
+                result.pop();
+            } else if (c == '}' && !result.isEmpty() && result.peek() == '{') {
+                result.pop();
+            } else if (c == ']' && !result.isEmpty() && result.peek() == '[') {
+                result.pop();
+            } else {
+                return false;
             }
         }
-
-        return arrows;
+        return result.isEmpty();
     }
 }
