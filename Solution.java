@@ -1,23 +1,29 @@
 import java.util.Stack;
 
 class Solution {
-    public boolean isValid(String s) {
-
-        Stack<Character> result = new Stack<>();
+    public String simplifyPath(String path) {
+        String[] parts = path.split("/");
+        Stack<String> stack = new Stack<>();
         
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '{' || c == '[') {
-                result.push(c);
-            } else if (c == ')' && !result.isEmpty() && result.peek() == '(') {
-                result.pop();
-            } else if (c == '}' && !result.isEmpty() && result.peek() == '{') {
-                result.pop();
-            } else if (c == ']' && !result.isEmpty() && result.peek() == '[') {
-                result.pop();
-            } else {
-                return false;
+        for (String part : parts) {
+            if (part.equals("..")) {
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else if (!part.isEmpty() && !part.equals(".")) {
+                stack.push(part);
             }
         }
-        return result.isEmpty();
+        
+        StringBuilder result = new StringBuilder("/");
+        for (String dir : stack) {
+            result.append(dir).append("/");
+        }
+        
+        if (result.length() > 1) {
+            result.setLength(result.length() - 1);
+        }
+        
+        return result.toString();
     }
 }
