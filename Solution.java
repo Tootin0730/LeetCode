@@ -1,29 +1,31 @@
-import java.util.Stack;
+class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
 
-class Solution {
-    public String simplifyPath(String path) {
-        String[] parts = path.split("/");
-        Stack<String> stack = new Stack<>();
-        
-        for (String part : parts) {
-            if (part.equals("..")) {
-                if (!stack.isEmpty()) {
-                    stack.pop();
-                }
-            } else if (!part.isEmpty() && !part.equals(".")) {
-                stack.push(part);
-            }
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+    }
+
+    public void push(int val) {
+        stack.push(val);
+        if (minStack.isEmpty() || val <= minStack.peek()) {
+            minStack.push(val);
         }
-        
-        StringBuilder result = new StringBuilder("/");
-        for (String dir : stack) {
-            result.append(dir).append("/");
+    }
+
+    public void pop() {
+        if (stack.peek().equals(minStack.peek())) {
+            minStack.pop();
         }
-        
-        if (result.length() > 1) {
-            result.setLength(result.length() - 1);
-        }
-        
-        return result.toString();
+        stack.pop();
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return minStack.peek();
     }
 }
