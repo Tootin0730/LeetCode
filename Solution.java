@@ -1,31 +1,37 @@
-class MinStack {
-    private Stack<Integer> stack;
-    private Stack<Integer> minStack;
+import java.util.Stack;
 
-    public MinStack() {
-        stack = new Stack<>();
-        minStack = new Stack<>();
-    }
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
 
-    public void push(int val) {
-        stack.push(val);
-        if (minStack.isEmpty() || val <= minStack.peek()) {
-            minStack.push(val);
+        for (String token : tokens) {
+            if (isOperator(token)) {
+                int b = stack.pop(); // Second operand
+                int a = stack.pop(); // First operand
+                stack.push(applyOperation(a, b, token));
+            } else {
+                stack.push(Integer.parseInt(token));
+            }
         }
+
+        return stack.pop();
     }
 
-    public void pop() {
-        if (stack.peek().equals(minStack.peek())) {
-            minStack.pop();
+    private boolean isOperator(String token) {
+        return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
+    }
+
+    private int applyOperation(int a, int b, String operator) {
+        switch (operator) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "*":
+                return a * b;
+            case "/":
+                return a / b; // Integer division truncates toward zero
         }
-        stack.pop();
-    }
-
-    public int top() {
-        return stack.peek();
-    }
-    
-    public int getMin() {
-        return minStack.peek();
+        throw new IllegalArgumentException("Invalid operator: " + operator);
     }
 }
