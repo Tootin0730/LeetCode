@@ -1,37 +1,38 @@
-import java.util.Stack;
-
 class Solution {
-    public int evalRPN(String[] tokens) {
+    public int calculate(String s) {
+        int result = 0;
+        int sign = 1;
+        int num = 0;
         Stack<Integer> stack = new Stack<>();
 
-        for (String token : tokens) {
-            if (isOperator(token)) {
-                int b = stack.pop(); // Second operand
-                int a = stack.pop(); // First operand
-                stack.push(applyOperation(a, b, token));
-            } else {
-                stack.push(Integer.parseInt(token));
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)) {
+                num = num * 10 + (c - '0');
+            } else if (c == '+') {
+                result += sign * num;
+                num = 0;
+                sign = 1;
+            } else if (c == '-') {
+                result += sign * num;
+                num = 0;
+                sign = -1;
+            } else if (c == '(') {
+                stack.push(result);
+                stack.push(sign);
+                result = 0;
+                sign = 1;
+            } else if (c == ')') {
+                result += sign * num;
+                num = 0;
+                result *= stack.pop();
+                result += stack.pop();
             }
         }
 
-        return stack.pop();
-    }
+        result += sign * num;
 
-    private boolean isOperator(String token) {
-        return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
-    }
-
-    private int applyOperation(int a, int b, String operator) {
-        switch (operator) {
-            case "+":
-                return a + b;
-            case "-":
-                return a - b;
-            case "*":
-                return a * b;
-            case "/":
-                return a / b; // Integer division truncates toward zero
-        }
-        throw new IllegalArgumentException("Invalid operator: " + operator);
+        return result;
     }
 }
