@@ -1,29 +1,33 @@
-Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
 
-Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
 
  
 
 Example 1:
 
-Input: s = "1 + 1"
-Output: 2
+
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
 Example 2:
 
-Input: s = " 2-1 + 2 "
-Output: 3
+
+Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
 Example 3:
 
-Input: s = "(1+(4+5+2)-3)+(6+8)"
-Output: 23
+
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
  
 
 Constraints:
 
-1 <= s.length <= 3 * 105
-s consists of digits, '+', '-', '(', ')', and ' '.
-s represents a valid expression.
-'+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
-'-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
-There will be no two consecutive operators in the input.
-Every number and running calculation will fit in a signed 32-bit integer.
+The number of the nodes in the list is in the range [0, 104].
+-105 <= Node.val <= 105
+pos is -1 or a valid index in the linked-list.

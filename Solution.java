@@ -1,38 +1,21 @@
-class Solution {
-    public int calculate(String s) {
-        int result = 0;
-        int sign = 1;
-        int num = 0;
-        Stack<Integer> stack = new Stack<>();
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false; 
+        }
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+        ListNode slow = head; 
+        ListNode fast = head; 
 
-            if (Character.isDigit(c)) {
-                num = num * 10 + (c - '0');
-            } else if (c == '+') {
-                result += sign * num;
-                num = 0;
-                sign = 1;
-            } else if (c == '-') {
-                result += sign * num;
-                num = 0;
-                sign = -1;
-            } else if (c == '(') {
-                stack.push(result);
-                stack.push(sign);
-                result = 0;
-                sign = 1;
-            } else if (c == ')') {
-                result += sign * num;
-                num = 0;
-                result *= stack.pop();
-                result += stack.pop();
+        while (fast != null && fast.next != null) {
+            slow = slow.next; 
+            fast = fast.next.next; 
+
+            if (slow == fast) {
+                return true; 
             }
         }
 
-        result += sign * num;
-
-        return result;
+        return false; 
     }
 }
