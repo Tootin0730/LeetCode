@@ -1,21 +1,25 @@
-public class Solution {
-    public boolean hasCycle(ListNode head) {
-        if (head == null || head.next == null) {
-            return false; 
-        }
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
 
-        ListNode slow = head; 
-        ListNode fast = head; 
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next; 
-            fast = fast.next.next; 
-
-            if (slow == fast) {
-                return true; 
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
             }
+            current = current.next;
         }
 
-        return false; 
+        if (list1 != null) {
+            current.next = list1;
+        } else {
+            current.next = list2;
+        }
+
+        return dummy.next;
     }
 }
