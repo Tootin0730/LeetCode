@@ -1,35 +1,31 @@
 class Solution {
-    public Node copyRandomList(Node head) {
-        if (head == null) return null;
-        
-        Node current = head;
-        while (current != null) {
-            Node copy = new Node(current.val);
-            copy.next = current.next;
-            current.next = copy;
-            current = copy.next;
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || left == right) {
+            return head;
         }
-        
-        current = head;
-        while (current != null) {
-            if (current.random != null) {
-                current.next.random = current.random.next;
-            }
-            current = current.next.next;
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
         }
-        
-        current = head;
-        Node copiedHead = head.next;
-        Node copiedCurrent = copiedHead;
-        while (current != null) {
-            current.next = current.next.next;
-            if (copiedCurrent.next != null) {
-                copiedCurrent.next = copiedCurrent.next.next;
-                copiedCurrent = copiedCurrent.next;
-            }
-            current = current.next;
+
+        ListNode curr = prev.next;
+        ListNode next = null;
+        ListNode prevReverse = null;
+
+        for (int i = left; i <= right; i++) {
+            next = curr.next;
+            curr.next = prevReverse;
+            prevReverse = curr;
+            curr = next;
         }
-        
-        return copiedHead;
+
+        prev.next.next = curr;t
+        prev.next = prevReverse;
+
+        return dummy.next;
     }
 }
